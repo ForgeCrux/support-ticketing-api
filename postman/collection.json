@@ -1,0 +1,152 @@
+{
+  "info" : {
+    "name" : "Support Ticketing API",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id" : "ec64a207-4774-4db3-93df-f6da671da6d4"
+  },
+  "item" : [ {
+    "name" : "initialize",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · searchTickets",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":{\"name\":\"searchTickets\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · createTicket",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"tools/call\",\"params\":{\"name\":\"createTicket\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · getTicketById",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/call\",\"params\":{\"name\":\"getTicketById\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · updateTicket",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":5,\"method\":\"tools/call\",\"params\":{\"name\":\"updateTicket\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · closeTicket",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":6,\"method\":\"tools/call\",\"params\":{\"name\":\"closeTicket\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · addTicketReply",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":7,\"method\":\"tools/call\",\"params\":{\"name\":\"addTicketReply\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · escalateTicket",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":8,\"method\":\"tools/call\",\"params\":{\"name\":\"escalateTicket\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  }, {
+    "name" : "tools/call · getCustomerProfile",
+    "request" : {
+      "method" : "POST",
+      "url" : {
+        "raw" : "http://localhost:3500/mcp"
+      },
+      "header" : [ {
+        "value" : "application/json",
+        "key" : "Content-Type"
+      } ],
+      "body" : {
+        "raw" : "{\"jsonrpc\":\"2.0\",\"id\":9,\"method\":\"tools/call\",\"params\":{\"name\":\"getCustomerProfile\",\"arguments\":{}}}",
+        "mode" : "raw"
+      }
+    }
+  } ]
+}
