@@ -1,0 +1,8 @@
+{
+  "mcpServers" : {
+    "support-ticketing-api" : {
+      "args" : [ ],
+      "command" : "npx support-ticketing-api"
+    }
+  }
+}
