@@ -1,0 +1,256 @@
+{
+  "slug" : "support-ticketing-api",
+  "name" : "Support Ticketing API",
+  "description" : "",
+  "category" : "Developer Tools",
+  "transport" : "STREAMABLE_HTTP",
+  "serverUrl" : "http://localhost:3500/mcp",
+  "requiresAuth" : true,
+  "tools" : [ {
+    "name" : "searchTickets",
+    "description" : "Returns tickets matching the given filters, cursor-paginated.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "enum" : [ "OPEN", "PENDING_CUSTOMER", "ESCALATED", "RESOLVED", "CLOSED" ],
+          "description" : "Filter by ticket status",
+          "in" : "query"
+        },
+        "priority" : {
+          "type" : "string",
+          "enum" : [ "LOW", "MEDIUM", "HIGH", "URGENT" ],
+          "description" : "Filter by priority level",
+          "in" : "query"
+        },
+        "assigneeEmail" : {
+          "type" : "string",
+          "description" : "Filter by assigned agent's email",
+          "in" : "query"
+        },
+        "cursor" : {
+          "type" : "string",
+          "description" : "Pagination cursor from a previous response",
+          "in" : "query"
+        },
+        "limit" : {
+          "type" : "integer",
+          "default" : 25,
+          "description" : "Maximum number of tickets to return (1-100)",
+          "in" : "query"
+        }
+      },
+      "required" : [ ]
+    }
+  }, {
+    "name" : "createTicket",
+    "description" : "Opens a new ticket on behalf of a customer.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "body" : {
+          "type" : "object",
+          "required" : [ "subject", "description", "customerEmail" ],
+          "properties" : {
+            "subject" : {
+              "type" : "string",
+              "description" : "Short summary of the issue"
+            },
+            "description" : {
+              "type" : "string",
+              "description" : "Full description of the customer's issue"
+            },
+            "customerEmail" : {
+              "type" : "string",
+              "description" : "Email address of the customer raising the ticket"
+            },
+            "priority" : {
+              "type" : "string",
+              "enum" : [ "LOW", "MEDIUM", "HIGH", "URGENT" ],
+              "description" : "Initial priority (defaults to MEDIUM if omitted)"
+            },
+            "category" : {
+              "type" : "string",
+              "enum" : [ "BILLING", "TECHNICAL", "ACCOUNT", "FEATURE_REQUEST", "OTHER" ]
+            },
+            "tags" : {
+              "type" : "array",
+              "description" : "Free-form labels for routing/reporting",
+              "items" : {
+                "type" : "string"
+              }
+            }
+          },
+          "description" : "Request body",
+          "mediaType" : "application/json"
+        }
+      },
+      "required" : [ "body" ]
+    }
+  }, {
+    "name" : "getTicketById",
+    "description" : "Retrieves full details of a single ticket, including its reply thread.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "ticketId" : {
+          "type" : "string",
+          "description" : "Unique ID of the ticket",
+          "in" : "path"
+        }
+      },
+      "required" : [ "ticketId" ]
+    }
+  }, {
+    "name" : "updateTicket",
+    "description" : "Partially updates a ticket — typically used to change status, reassign, or reprioritize.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "ticketId" : {
+          "type" : "string",
+          "description" : "Unique ID of the ticket to update",
+          "in" : "path"
+        },
+        "body" : {
+          "type" : "object",
+          "required" : [ "status" ],
+          "properties" : {
+            "status" : {
+              "type" : "string",
+              "enum" : [ "OPEN", "PENDING_CUSTOMER", "ESCALATED", "RESOLVED", "CLOSED" ],
+              "description" : "New status for the ticket"
+            },
+            "priority" : {
+              "type" : "string",
+              "enum" : [ "LOW", "MEDIUM", "HIGH", "URGENT" ]
+            },
+            "assigneeEmail" : {
+              "type" : "string",
+              "description" : "Email of the agent to assign this ticket to"
+            },
+            "resolutionNotes" : {
+              "type" : "string",
+              "description" : "Notes explaining the resolution (required when status is RESOLVED, by convention)"
+            }
+          },
+          "description" : "Request body",
+          "mediaType" : "application/json"
+        }
+      },
+      "required" : [ "ticketId", "body" ]
+    }
+  }, {
+    "name" : "closeTicket",
+    "description" : "Permanently closes a ticket. Closed tickets are read-only.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "ticketId" : {
+          "type" : "string",
+          "description" : "Unique ID of the ticket to close",
+          "in" : "path"
+        }
+      },
+      "required" : [ "ticketId" ]
+    }
+  }, {
+    "name" : "addTicketReply",
+    "description" : "Adds a reply to the ticket's activity thread, optionally with file attachments and marked as an internal (agent-only) note.\n",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "ticketId" : {
+          "type" : "string",
+          "description" : "Unique ID of the ticket",
+          "in" : "path"
+        },
+        "body" : {
+          "type" : "object",
+          "required" : [ "message", "authorEmail" ],
+          "properties" : {
+            "message" : {
+              "type" : "string",
+              "description" : "Reply body text"
+            },
+            "authorEmail" : {
+              "type" : "string",
+              "description" : "Email of the person posting the reply"
+            },
+            "internal" : {
+              "type" : "boolean",
+              "description" : "If true, this reply is only visible to agents, not the customer"
+            },
+            "attachments" : {
+              "type" : "array",
+              "description" : "Files attached to this reply",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "fileName" : {
+                    "type" : "string"
+                  },
+                  "url" : {
+                    "type" : "string"
+                  },
+                  "sizeBytes" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
+          },
+          "description" : "Request body",
+          "mediaType" : "application/json"
+        }
+      },
+      "required" : [ "ticketId", "body" ]
+    }
+  }, {
+    "name" : "escalateTicket",
+    "description" : "Marks the ticket as ESCALATED and optionally routes it to a specific team.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "ticketId" : {
+          "type" : "string",
+          "description" : "Unique ID of the ticket to escalate",
+          "in" : "path"
+        },
+        "body" : {
+          "type" : "object",
+          "required" : [ "reason" ],
+          "properties" : {
+            "reason" : {
+              "type" : "string",
+              "description" : "Why this ticket is being escalated"
+            },
+            "escalateToTeam" : {
+              "type" : "string",
+              "enum" : [ "ENGINEERING", "BILLING_OPS", "TRUST_AND_SAFETY", "LEADERSHIP" ],
+              "description" : "Team this ticket should be routed to"
+            }
+          },
+          "description" : "Request body",
+          "mediaType" : "application/json"
+        }
+      },
+      "required" : [ "ticketId", "body" ]
+    }
+  }, {
+    "name" : "getCustomerProfile",
+    "description" : "Retrieves a customer's contact info, plan, and open-ticket count — useful context before replying.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : {
+        "customerId" : {
+          "type" : "string",
+          "description" : "Unique ID of the customer",
+          "in" : "path"
+        }
+      },
+      "required" : [ "customerId" ]
+    }
+  } ]
+}
