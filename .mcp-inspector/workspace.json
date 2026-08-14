@@ -1,0 +1,7 @@
+{
+  "server" : {
+    "name" : "support-ticketing-api",
+    "transport" : "streamable-http",
+    "command" : "npx support-ticketing-api"
+  }
+}
